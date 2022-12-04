@@ -53,5 +53,9 @@ def parse_args():
                         help="seed to run the experiment")
     parser.add_argument("--early_stop", type=int, default=20,
                         help="early_stopping by which epoch*5")
+    parser.add_argument("--use_edge_features", type=int, default=0,
+                        help="Use edge features or not")
+    parser.add_argument("--use_edge_weights", type=int, default=0,
+                        help="Use edge weights or not")
 
     return parser.parse_args()

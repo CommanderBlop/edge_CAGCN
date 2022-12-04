@@ -82,7 +82,6 @@ def _si_norm_lap(adj):
     norm_adj = d_mat_inv.dot(adj)
     return norm_adj.tocoo()
 
-
 def load_data(args):
     print('reading train and test user-item set ...')
     train_cf = read_cf_list(os.getcwd() + '/data/' +
@@ -92,6 +91,10 @@ def load_data(args):
 
     n_users, n_items, train_user_set, test_user_set, train_item_set, ratings = process(
         train_cf, test_cf)
+    ratings_cf = train_cf[:,2]
+    ratings_cf_ = ratings_cf.copy()
+    ratings_cf = torch.LongTensor(np.concatenate([ratings_cf, ratings_cf_], axis=0) + 1).t()  # [[0, R], [R^T, 0]]
+
     train_cf = train_cf.astype(np.int32)[:,:2]
     test_cf = test_cf.astype(np.int32)[:,:2]
     print('building the adj mat ...')
@@ -110,8 +113,7 @@ def load_data(args):
 
 
     print('loading over ...')
-    print(train_cf)
-    return train_cf, test_cf, user_dict, n_users, n_items, clicked_set, adj, ratings
+    return train_cf, test_cf, user_dict, n_users, n_items, clicked_set, adj, ratings, ratings_cf
 
 
 class Dataset(BaseDataset):

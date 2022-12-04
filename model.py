@@ -260,7 +260,7 @@ class GraphConv_CA(nn.Module):
         super(GraphConv_CA, self).__init__()
         self.args = args
 
-    def forward(self, embed, adj_sp_norm, edge_index, edge_weight, trend):
+    def forward(self, embed, adj_sp_norm, edge_index, edge_weight, trend, ratings):
         # user_embed: [n_users, channel]
         # item_embed: [n_items, channel]
 
@@ -271,8 +271,7 @@ class GraphConv_CA(nn.Module):
         row, col = edge_index
 
         for hop in range(self.args.n_hops):
-            out = agg_embed[row] * \
-                (trend).unsqueeze(-1)
+            out = agg_embed[row] * (trend).unsqueeze(-1) * ratings.unsqueeze(-1) if ratings is not None else agg_embed[row] * (trend).unsqueeze(-1)
             agg_embed = scatter(
                 out, col, dim=0, dim_size=self.args.n_users + self.args.n_items, reduce='add')
 
@@ -302,7 +301,7 @@ class CAGCN(nn.Module):
 
     def batch_generate(self, user, pos_item, neg_item):
         embs = self.gcn(
-            self.embeds, self.adj_sp_norm, self.edge_index, self.edge_weight, self.trend)
+            self.embeds, self.adj_sp_norm, self.edge_index, self.edge_weight, self.trend, self.ratings)
 
         embs = self.pooling(embs)
 
@@ -322,7 +321,6 @@ class CAGCN(nn.Module):
 
         user_embs, pos_item_embs, neg_item_embs = self.batch_generate(
             user, pos_item, neg_item)
-
         return user_embs, pos_item_embs, neg_item_embs, self.embeds[user], self.embeds[pos_item], self.embeds[neg_item]
 
     def pooling(self, embeddings):
@@ -338,11 +336,11 @@ class CAGCN(nn.Module):
 
     def generate(self):
         embs = self.gcn(self.embeds, self.adj_sp_norm,
-                        self.edge_index, self.edge_weight, self.trend)
+                        self.edge_index, self.edge_weight, self.trend, self.ratings)
 
         embs = self.pooling(embs)
 
         return embs[:self.args.n_users], embs[self.args.n_users:]
 
     def generate_layers(self):
-        return self.gcn(self.embeds, self.adj_sp_norm, self.edge_index, self.edge_weight, self.trend)
+        return self.gcn(self.embeds, self.adj_sp_norm, self.edge_index, self.edge_weight, self.trend, self.ratings)

@@ -15,7 +15,7 @@ from model import *
 from dataprocess import *
 
 
-def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings):
+def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings, ratings_cf=None):
     test_recall_best, early_stop_count = -float('inf'), 0
 
     adj_sp_norm, deg = normalize_edge(adj, args.n_users, args.n_items)
@@ -25,6 +25,7 @@ def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings):
     model.edge_index = edge_index.to(args.device)
     model.edge_weight = edge_weight.to(args.device)
     model.deg = deg.to(args.device)
+    model.ratings = ratings_cf.to(args.device) if ratings_cf is not None else None
 
     row, col = edge_index
     args.user_dict = user_dict
@@ -59,7 +60,6 @@ def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings):
         else:
             print(args.dataset, 'calculate_CIR', 'count_time...')
             start = time.time()
-            print('before all falls down')
             trend = cal_trend(
                 adj_sp_norm, edge_index, deg, args)
             print('Preprocession', time.time() - start)
@@ -94,16 +94,23 @@ def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings):
 
         for i, batch in enumerate(dataloader):
             batch = batch_to_gpu(batch, args.device)
-            batch_ratings = [ratings[(user, item)] for user, item in zip(batch['users'].cpu().numpy(), batch['pos_items'].cpu().numpy())]
-            # print(batch_ratings)
 
-            batch_ratings = torch.from_numpy(np.array(batch_ratings)).cuda()
+            if args.use_edge_weights or args.use_edge_features:
+                batch_ratings = [ratings[(user, item)] for user, item in zip(batch['users'].cpu().numpy(), batch['pos_items'].cpu().numpy())]
+                # print(batch_ratings)
 
-            user_embs, pos_item_embs, neg_item_embs, user_embs0, pos_item_embs0, neg_item_embs0 = model(
-                batch)
+                batch_ratings = torch.from_numpy(np.array(batch_ratings)).cuda()
+            
+            if args.use_edge_weights:
+                user_embs, pos_item_embs, neg_item_embs, user_embs0, pos_item_embs0, neg_item_embs0 = model(
+                    batch)
 
-            bpr_loss = cal_bpr_loss(
-                user_embs, pos_item_embs, neg_item_embs, batch_ratings)
+            if args.use_edge_features:
+                bpr_loss = cal_bpr_loss(
+                    user_embs, pos_item_embs, neg_item_embs, batch_ratings)
+            else:
+                bpr_loss = cal_bpr_loss(
+                    user_embs, pos_item_embs, neg_item_embs)
 
             # l2 regularization
             l2_loss = cal_l2_loss(
@@ -158,10 +165,8 @@ if __name__ == '__main__':
     seed_everything(args.seed)
 
     """build dataset"""
-    train_cf, test_cf, user_dict, args.n_users, args.n_items, clicked_set, adj, ratings = load_data(
+    train_cf, test_cf, user_dict, args.n_users, args.n_items, clicked_set, adj, ratings, ratings_cf = load_data(
         args)
-    print(train_cf)
-
 
     print(args.n_users, args.n_items, train_cf.shape[0] + test_cf.shape[0],
           (train_cf.shape[0] + test_cf.shape[0]) / (args.n_items * args.n_users))
@@ -182,4 +187,7 @@ if __name__ == '__main__':
     """define optimizer"""
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
-    run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings)
+    if args.use_edge_weights: 
+        run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings, ratings_cf)
+    else:
+        run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings, ratings_cf)
