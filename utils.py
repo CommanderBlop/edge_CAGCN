@@ -80,12 +80,6 @@ def ratio(train_cf, n_users):
 
 def cal_bpr_loss(user_embs, pos_item_embs, neg_item_embs, link_ratios=None):
 
-    # print("user",user_embs.shape)
-    # print("pos",pos_item_embs.shape)
-    # print("neg",neg_item_embs.shape)
-    # print("user",user_embs)
-    # print("pos",pos_item_embs)
-    # print("neg",neg_item_embs)
 
 
     pos_scores = torch.sum(
@@ -94,10 +88,12 @@ def cal_bpr_loss(user_embs, pos_item_embs, neg_item_embs, link_ratios=None):
     neg_scores = torch.sum(torch.mul(user_embs.unsqueeze(
         dim=1), neg_item_embs), axis=-1)
 
-    bpr_loss = torch.mean(
-        link_ratios*torch.log(1 + torch.exp((neg_scores - pos_scores.unsqueeze(dim=1))).sum(dim=1)))
-
-    # bpr_loss = (link_ratios*torch.log(1 + torch.exp((neg_scores - pos_scores.unsqueeze(dim=1))).sum(dim=1))).mean()
+    if link_ratios:
+        bpr_loss = (link_ratios*torch.log(1 + torch.exp((neg_scores - pos_scores.unsqueeze(dim=1))).sum(dim=1))).mean()
+    else:
+        
+        bpr_loss = torch.mean(
+            torch.log(1 + torch.exp((neg_scores - pos_scores.unsqueeze(dim=1))).sum(dim=1)))
 
     return bpr_loss
 
@@ -162,7 +158,6 @@ def co_ratio_deg_user_jacard(adj_sp_norm, edge_index, degree, args):
 
 
 def co_ratio_deg_user_jacard_sp(adj_sp_norm, edge_index, degree, args):
-    print("hello")
     edge_weight = torch.zeros(
         (args.n_users + args.n_items, args.n_users + args.n_items))
 
