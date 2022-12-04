@@ -82,7 +82,7 @@ def cal_bpr_loss(user_embs, pos_item_embs, neg_item_embs, link_ratios=None):
 
     # print("user",user_embs.shape)
     # print("pos",pos_item_embs.shape)
-    # print("neg",neg_item_embs.shape)
+    # print("neg",neg_items_embs.shape)
     # print("user",user_embs)
     # print("pos",pos_item_embs)
     # print("neg",neg_item_embs)
@@ -95,7 +95,7 @@ def cal_bpr_loss(user_embs, pos_item_embs, neg_item_embs, link_ratios=None):
         dim=1), neg_item_embs), axis=-1)
 
     bpr_loss = torch.mean(
-        link_ratios*torch.log(1 + torch.exp((neg_scores - pos_scores.unsqueeze(dim=1))).sum(dim=1)))
+        5*link_ratios*torch.log(1 + torch.exp((neg_scores - pos_scores.unsqueeze(dim=1))).sum(dim=1)))
 
     # bpr_loss = (link_ratios*torch.log(1 + torch.exp((neg_scores - pos_scores.unsqueeze(dim=1))).sum(dim=1))).mean()
 
