@@ -101,9 +101,9 @@ def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings, 
 
                 batch_ratings = torch.from_numpy(np.array(batch_ratings)).cuda()
             
-            if args.use_edge_weights:
-                user_embs, pos_item_embs, neg_item_embs, user_embs0, pos_item_embs0, neg_item_embs0 = model(
-                    batch)
+            # if args.use_edge_weights:
+            user_embs, pos_item_embs, neg_item_embs, user_embs0, pos_item_embs0, neg_item_embs0 = model(
+                batch)
 
             if args.use_edge_features:
                 bpr_loss = cal_bpr_loss(
