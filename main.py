@@ -40,17 +40,17 @@ def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings, 
             if args.dataset in ['amazon']:
                 cal_trend = co_ratio_deg_user_common_sp
             else:
-                cal_trend = co_ratio_deg_user_common
+                cal_trend = co_ratio_deg_user_common_sp
         elif args.type == 'lhn':
             if args.dataset in ['amazon']:
                 cal_trend = co_ratio_deg_user_lhn_sp
             else:
-                cal_trend = co_ratio_deg_user_lhn
+                cal_trend = co_ratio_deg_user_lhn_sp
         elif args.type == 'sc':
             if args.dataset in ['amazon']:
                 cal_trend = co_ratio_deg_user_sc_sp
             else:
-                cal_trend = co_ratio_deg_user_sc
+                cal_trend = co_ratio_deg_user_sc_sp
 
         path = os.getcwd() + '/data/' + args.dataset + \
             '/co_ratio_edge_weight_' + args.type + '.pt'

@@ -88,7 +88,7 @@ def cal_bpr_loss(user_embs, pos_item_embs, neg_item_embs, link_ratios=None):
     neg_scores = torch.sum(torch.mul(user_embs.unsqueeze(
         dim=1), neg_item_embs), axis=-1)
 
-    if link_ratios:
+    if link_ratios is not None:
         bpr_loss = (link_ratios*torch.log(1 + torch.exp((neg_scores - pos_scores.unsqueeze(dim=1))).sum(dim=1))).mean()
     else:
         
