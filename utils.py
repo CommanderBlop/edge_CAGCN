@@ -152,7 +152,7 @@ def co_ratio_deg_user_jacard(adj_sp_norm, edge_index, degree, args):
     edge_weight = edge_weight[edge_index[0], edge_index[1]]
 
     torch.save(edge_weight, os.getcwd() + '/data/' +
-               args.dataset + '/co_ratio_edge_weight_jc.pt')
+               args.dataset + '/co_ratio_edge_weight_jc'+ str(args.split) +'.pt')
 
     return edge_weight
 
@@ -198,7 +198,7 @@ def co_ratio_deg_user_jacard_sp(adj_sp_norm, edge_index, degree, args):
     edge_weight = edge_weight[edge_index[0], edge_index[1]]
 
     torch.save(edge_weight, os.getcwd() + '/data/' +
-               args.dataset + '/co_ratio_edge_weight_jc.pt')
+               args.dataset + '/co_ratio_edge_weight_jc'+ str(args.split) +'.pt')
 
     return edge_weight
 
@@ -239,7 +239,7 @@ def co_ratio_deg_user_common(adj_sp_norm, edge_index, degree, args):
     edge_weight = edge_weight[edge_index[0], edge_index[1]]
 
     torch.save(edge_weight, os.getcwd() + '/data/' +
-               args.dataset + '/co_ratio_edge_weight_co.pt')
+               args.dataset + '/co_ratio_edge_weight_co'+ str(args.split) +'.pt')
 
     return edge_weight
 
@@ -282,7 +282,7 @@ def co_ratio_deg_user_common_sp(adj_sp_norm, edge_index, degree, args):
     edge_weight = edge_weight[edge_index[0], edge_index[1]]
 
     torch.save(edge_weight, os.getcwd() + '/data/' +
-               args.dataset + '/co_ratio_edge_weight_co.pt')
+               args.dataset + '/co_ratio_edge_weight_co'+ str(args.split) +'.pt')
 
     return edge_weight
 
@@ -325,7 +325,7 @@ def co_ratio_deg_user_sc(adj_sp_norm, edge_index, degree, args):
     edge_weight = edge_weight[edge_index[0], edge_index[1]]
 
     torch.save(edge_weight, os.getcwd() + '/data/' +
-               args.dataset + '/co_ratio_edge_weight_sc.pt')
+               args.dataset + '/co_ratio_edge_weight_sc'+ str(args.split) +'.pt')
 
     return edge_weight
 
@@ -370,7 +370,7 @@ def co_ratio_deg_user_sc_sp(adj_sp_norm, edge_index, degree, args):
     edge_weight = edge_weight[edge_index[0], edge_index[1]]
 
     torch.save(edge_weight, os.getcwd() + '/data/' +
-               args.dataset + '/co_ratio_edge_weight_sc.pt')
+               args.dataset + '/co_ratio_edge_weight_sc'+ str(args.split) +'.pt')
 
     return edge_weight
 
@@ -413,7 +413,7 @@ def co_ratio_deg_user_lhn(adj_sp_norm, edge_index, degree, args):
     edge_weight = edge_weight[edge_index[0], edge_index[1]]
 
     torch.save(edge_weight, os.getcwd() + '/data/' +
-               args.dataset + '/co_ratio_edge_weight_lhn.pt')
+               args.dataset + '/co_ratio_edge_weight_lhn'+ str(args.split) +'.pt')
 
     return edge_weight
 
@@ -458,7 +458,7 @@ def co_ratio_deg_user_lhn_sp(adj_sp_norm, edge_index, degree, args):
     edge_weight = edge_weight[edge_index[0], edge_index[1]]
 
     torch.save(edge_weight, os.getcwd() + '/data/' +
-               args.dataset + '/co_ratio_edge_weight_lhn.pt')
+               args.dataset + '/co_ratio_edge_weight_lhn'+ str(args.split) +'.pt')
 
     return edge_weight
 
