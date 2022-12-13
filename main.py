@@ -97,7 +97,6 @@ def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings, 
 
             if args.use_edge_weights or args.use_edge_features:
                 batch_ratings = [ratings[(user, item)] for user, item in zip(batch['users'].cpu().numpy(), batch['pos_items'].cpu().numpy())]
-                # print(batch_ratings)
 
                 batch_ratings = torch.from_numpy(np.array(batch_ratings)).cuda()
             
