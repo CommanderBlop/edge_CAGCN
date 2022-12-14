@@ -40,17 +40,17 @@ def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings, 
             if args.dataset in ['amazon']:
                 cal_trend = co_ratio_deg_user_common_sp
             else:
-                cal_trend = co_ratio_deg_user_common
+                cal_trend = co_ratio_deg_user_common_sp
         elif args.type == 'lhn':
             if args.dataset in ['amazon']:
                 cal_trend = co_ratio_deg_user_lhn_sp
             else:
-                cal_trend = co_ratio_deg_user_lhn
+                cal_trend = co_ratio_deg_user_lhn_sp
         elif args.type == 'sc':
             if args.dataset in ['amazon']:
                 cal_trend = co_ratio_deg_user_sc_sp
             else:
-                cal_trend = co_ratio_deg_user_sc
+                cal_trend = co_ratio_deg_user_sc_sp
 
         path = os.getcwd() + '/data/' + args.dataset + \
             '/co_ratio_edge_weight_' + args.type + '.pt'
@@ -97,13 +97,11 @@ def run(model, optimizer, train_cf, clicked_set, user_dict, adj, args, ratings, 
 
             if args.use_edge_weights or args.use_edge_features:
                 batch_ratings = [ratings[(user, item)] for user, item in zip(batch['users'].cpu().numpy(), batch['pos_items'].cpu().numpy())]
-                # print(batch_ratings)
 
                 batch_ratings = torch.from_numpy(np.array(batch_ratings)).cuda()
             
-            # if args.use_edge_weights:
             user_embs, pos_item_embs, neg_item_embs, user_embs0, pos_item_embs0, neg_item_embs0 = model(
-                batch)
+                    batch)
 
             if args.use_edge_features:
                 bpr_loss = cal_bpr_loss(

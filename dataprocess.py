@@ -93,7 +93,7 @@ def load_data(args):
         train_cf, test_cf)
     ratings_cf = train_cf[:,2]
     ratings_cf_ = ratings_cf.copy()
-    ratings_cf = torch.LongTensor(np.concatenate([ratings_cf, ratings_cf_], axis=0) + 1).t()  # [[0, R], [R^T, 0]]
+    ratings_cf = torch.LongTensor(np.concatenate([ratings_cf, ratings_cf_], axis=0)).t()  # [[0, R], [R^T, 0]]
 
     train_cf = train_cf.astype(np.int32)[:,:2]
     test_cf = test_cf.astype(np.int32)[:,:2]

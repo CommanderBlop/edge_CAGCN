@@ -1,12 +1,9 @@
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=21 --embedding_dim=32 --lr=1e-3
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=21 --embedding_dim=32 --lr=2e-3
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=21 --embedding_dim=32 --lr=3e-3
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=21 --embedding_dim=32 --lr=4e-3
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=21 --embedding_dim=32 --lr=5e-3
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=21 --embedding_dim=32 --lr=6e-3
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=21 --embedding_dim=32 --l   r=7e-3
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=21 --embedding_dim=32 --lr=8e-3
-python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=36 --embedding_dim=32 --lr=9e-3 --save=1 --use_edge_weights=0 --use_edge_features=0
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=100 --embedding_dim=32 --lr=5e-2
-@REM python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=0.8 --l2=1e-4  --epochs=30 --embedding_dim=32 --lr=15e-3
-
+@REM Run CAGCN with edge weights and features
+python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=1.8 --l2=1e-4  --epochs=101 --embedding_dim=32 --lr=9e-3 --save=1 --split=3 --use_edge_weights=1  & ^
+python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=lhn --trend_coeff=1.8 --l2=1e-4  --epochs=101 --embedding_dim=32 --lr=9e-3 --save=1 --split=3 --use_edge_weights=1 & ^
+python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=co --trend_coeff=1.8 --l2=1e-4  --epochs=101 --embedding_dim=32 --lr=9e-3 --save=1 --split=3 --use_edge_weights=1 & ^
+python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=sc --trend_coeff=1.8 --l2=1e-4  --epochs=101 --embedding_dim=32 --lr=9e-3 --save=1 --split=3 --use_edge_weights=1 & ^
+python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=co --trend_coeff=1.8 --l2=1e-4  --epochs=101 --embedding_dim=32 --lr=9e-3 --save=1 --split=2 --use_edge_weights=1 & ^
+python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=sc --trend_coeff=1.8 --l2=1e-4  --epochs=101 --embedding_dim=32 --lr=9e-3 --save=1 --split=2 --use_edge_weights=1 & ^
+python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=jc --trend_coeff=1.8 --l2=1e-4  --epochs=101 --embedding_dim=32 --lr=9e-3 --save=1 --split=2 --use_edge_weights=1  & ^
+python main.py --dataset=yelp_review --model=CAGCN --neg_in_val_test=0 --type=lhn --trend_coeff=1.8 --l2=1e-4  --epochs=101 --embedding_dim=32 --lr=9e-3 --save=1 --split=2 --use_edge_weights=1 
